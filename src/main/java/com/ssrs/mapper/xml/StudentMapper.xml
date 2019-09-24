@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssrs.mapper.StudentMapper">
+
+    <!-- 开启二级缓存 -->
+    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ssrs.model.Student">
+        <id column="id" property="id" />
+        <result column="stu_name" property="stuName" />
+        <result column="stu_age" property="stuAge" />
+        <result column="stu_grade" property="stuGrade" />
+        <result column="stu_number" property="stuNumber" />
+        <result column="stu_create_time" property="stuCreateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, stu_name, stu_age, stu_grade, stu_number, stu_create_time
+    </sql>
+
+</mapper>
