@@ -3,8 +3,11 @@ package com.ssrs.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.service.IService;
 import com.ssrs.core.manager.PageManager;
+import com.ssrs.model.Artical;
 import com.ssrs.model.Student;
+import com.ssrs.service.IArticalService;
 import com.ssrs.service.IStudentService;
 import com.ssrs.util.commom.APPUtil;
 import com.ssrs.util.commom.StringUtils;
@@ -26,21 +29,22 @@ import javax.annotation.Resource;
  * @since 2019-09-20
  */
 @Controller
-@RequestMapping("/student")
-public class StudentController {
+@RequestMapping("/artical")
+public class ArticalController {
+
 
     @Autowired
     private IStudentService studentService;
 
     /**
      * 接收 /student/index GET 请求
-     * 跳转到 /webapp/WEB-INF/ftl/student/index.ftl 页面
+     * 跳转到 /webapp/WEB-INF/ftl/artical/index.ftl 页面
      * @return
      *
      */
     @RequestMapping(value = "index" ,method = RequestMethod.GET)
     public String index(){
-        return "student/index";   //第1个
+        return "artical/index";   //第1个
     }
 
     /**
@@ -59,18 +63,11 @@ public class StudentController {
      * 不加 就是返回视图页面
      * @return
      */
-    @RequestMapping(value = "add" ,method = RequestMethod.POST)
-    @ResponseBody
-    public Object add(Student student){
-        boolean b = studentService.insert(student);
-        //如果添加成功，就放回{status:200,message:'添加成功'}的JSON格式类型数据给前台 否则就返回{status:101,message:'添加失败'}
-        return b? APPUtil.resultMapType(APPUtil.INSERT_SUCCESS_TYPE):APPUtil.resultMapType(APPUtil.INSERT_ERROR_TYPE);
-    }
 
     //index时，表格渲染加载此处
-    @RequestMapping(value = "getStudentPage" ,method = RequestMethod.POST)
+    @RequestMapping(value = "getArticalPage" ,method = RequestMethod.POST)
     @ResponseBody
-    public Object getStudentPage(int page,int limit,String search){
+    public Object getArticalPage(int page,int limit,String search){
         boolean isSearch = false;
         if (StringUtils.isNotBlank(search)){
             isSearch = true;
@@ -80,28 +77,5 @@ public class StudentController {
         return PageManager.buildPage(studentPage);  //返回的是一个Map,(Code、MSG、Count、Data)
     }
 
-    @RequestMapping(value = "goUpdate" ,method = RequestMethod.GET)
-    public String goUpdate(long id, Model model){
-        Student student = studentService.selectById(id);
-        model.addAttribute("stu",student);  //底层原理：使用request.setAttribute()方法
-        System.out.println("student:"+student);
-        return  "student/update";  //返回视图
-    }
-
-
-    @RequestMapping(value = "update" ,method = RequestMethod.POST)
-    @ResponseBody
-    public Object update(Student student){
-        boolean b = studentService.updateById(student);
-        return b?APPUtil.resultMapType(APPUtil.UPDATE_SUCCESS_TYPE):APPUtil.resultMapType(APPUtil.UPDATE_ERROR_TYPE);
-    }
-
-
-    @RequestMapping(value = "del" ,method = RequestMethod.POST)
-    @ResponseBody
-    public Object update(long id){
-        boolean b = studentService.deleteById(id);
-        return b?APPUtil.resultMapType(APPUtil.DELEATE_SUCCESS_TYPE):APPUtil.resultMapType(APPUtil.DELEATE_ERROR_TYPE);
-    }
 }
 
